@@ -1,29 +1,119 @@
 "use client";
 
-import { useState } from "react";
-import { Player, PlayerButton } from "./ui/player-button";
+import React, { useState } from "react";
+import { FieldSlot, PlayerButton } from "./ui/player-button";
+import { FootballCamp } from "./ui/football-camp";
 
-const playersData: Player[] = [
-  { name: "Rogério Ceni", shortName: "R. Ceni", position: "GOL", x: 50, y: 88 },
-  { name: "Cafu", shortName: "Cafu", position: "LD", x: 86, y: 64 },
-  { name: "Gamarra", shortName: "Gamarra", position: "ZAG", x: 68, y: 75 },
-  { name: "Lugano", shortName: "Lugano", position: "ZAG", x: 32, y: 75 },
-  { name: "Júnior", shortName: "Júnior", position: "LE", x: 14, y: 64 },
-  { name: "Pelé", shortName: "Pelé", position: "MEI", x: 25, y: 44 },
-  { name: "Zanetti", shortName: "Zanetti", position: "VOL", x: 50, y: 56 },
-  { name: "Riquelme", shortName: "Riquelme", position: "MC", x: 75, y: 44 },
-  { name: "Neymar", shortName: "Neymar", position: "PE", x: 20, y: 24 },
-  { name: "Tevez", shortName: "Tevez", position: "CA", x: 50, y: 14 },
-  { name: "Gabigol", shortName: "Gabigol", position: "PD", x: 80, y: 24 },
+interface LandingProps {
+  onStart: () => void;
+}
+
+// Jogadores que aparecem na tela inicial (formação 4-3-3 clássica)
+const previewSlots: FieldSlot[] = [
+  {
+    pos: "GK",
+    x: 50,
+    y: 88,
+    player: {
+      id: "1",
+      name: "Rogério Ceni",
+      shortName: "R. Ceni",
+      position: ["GOL"],
+    },
+  },
+  {
+    pos: "LD",
+    x: 86,
+    y: 64,
+    player: { id: "2", name: "Cafu", shortName: "Cafu", position: ["LD"] },
+  },
+  {
+    pos: "ZAG",
+    x: 68,
+    y: 75,
+    player: {
+      id: "3",
+      name: "Gamarra",
+      shortName: "Gamarra",
+      position: ["ZAG"],
+    },
+  },
+  {
+    pos: "ZAG",
+    x: 32,
+    y: 75,
+    player: { id: "4", name: "Lugano", shortName: "Lugano", position: ["ZAG"] },
+  },
+  {
+    pos: "LE",
+    x: 14,
+    y: 64,
+    player: { id: "5", name: "Júnior", shortName: "Júnior", position: ["LE"] },
+  },
+  {
+    pos: "MEI",
+    x: 25,
+    y: 44,
+    player: {
+      id: "6",
+      name: "Riquelme",
+      shortName: "Riquelme",
+      position: ["MEI"],
+    },
+  },
+  {
+    pos: "VOL",
+    x: 50,
+    y: 56,
+    player: {
+      id: "7",
+      name: "Zanetti",
+      shortName: "Zanetti",
+      position: ["VOL"],
+    },
+  },
+  {
+    pos: "MC",
+    x: 75,
+    y: 44,
+    player: {
+      id: "8",
+      name: "Sócrates",
+      shortName: "Sócrates",
+      position: ["MC"],
+    },
+  },
+  {
+    pos: "PE",
+    x: 20,
+    y: 24,
+    player: { id: "9", name: "Neymar", shortName: "Neymar", position: ["PE"] },
+  },
+  {
+    pos: "CA",
+    x: 50,
+    y: 14,
+    player: { id: "10", name: "Tevez", shortName: "Tevez", position: ["CA"] },
+  },
+  {
+    pos: "PD",
+    x: 80,
+    y: 24,
+    player: {
+      id: "11",
+      name: "Gabigol",
+      shortName: "Gabigol",
+      position: ["PD"],
+    },
+  },
 ];
 
-export default function Landing() {
-  // Estado para controlar o modal
+export default function Landing({ onStart }: LandingProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <main className="min-h-screen bg-[#FFFAF3] text-[#262626] font-sans selection:bg-[#BF1A1A] selection:text-[#FFFAF3] flex items-center justify-center overflow-x-hidden relative">
-      <div className="max-w-350 w-full px-6 py-12 md:py-20 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <main className="min-h-screen bg-[#FFFAF3] text-[#262626] font-sans selection:bg-[#BF1A1A] selection:text-[#FFFAF3] flex items-center justify-center overflow-x-hidden relative w-full">
+      <div className="max-w-[1400px] w-full px-6 py-12 md:py-20 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Lado Esquerdo: Conteúdo */}
         <div className="flex flex-col space-y-8 z-10 relative">
           {/* Logo / Tag */}
@@ -53,7 +143,10 @@ export default function Landing() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <button className="bg-[#BF1A1A] text-[#FFFAF3] px-8 py-4 uppercase font-black tracking-widest border-2 border-[#262626] shadow-[4px_4px_0px_#262626] hover:translate-y-1 hover:shadow-[0px_0px_0px_#262626] transition-all active:scale-95">
+            <button
+              onClick={onStart}
+              className="bg-[#BF1A1A] text-[#FFFAF3] px-8 py-4 uppercase font-black tracking-widest border-2 border-[#262626] shadow-[4px_4px_0px_#262626] hover:translate-y-1 hover:shadow-[0px_0px_0px_#262626] transition-all active:scale-95"
+            >
               Começar Campanha
             </button>
             <button
@@ -100,45 +193,13 @@ export default function Landing() {
         </div>
 
         {/* Lado Direito: Prancheta / Campo Estilizado */}
-        <div className="relative w-full max-w-125 mx-auto lg:ml-auto">
-          <div
-            className="relative w-full aspect-3/4 border-4 border-[#262626] shadow-[8px_8px_0px_#262626] rounded-sm p-4 overflow-hidden"
-            style={{
-              background: `repeating-linear-gradient(
-                0deg,
-                #4A7C46,
-                #4A7C46 10%,
-                #52854E 10%,
-                #52854E 20%
-              )`,
-            }}
-          >
-            {/* Linhas do Campo */}
-            <div className="absolute inset-4 border-2 border-[#FFFAF3]/60 pointer-events-none">
-              <div className="absolute top-1/2 left-0 w-full h-px bg-[#FFFAF3]/60 -translate-y-1/2"></div>
-              <div className="absolute top-1/2 left-1/2 w-24 h-24 sm:w-32 sm:h-32 border-2 border-[#FFFAF3]/60 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-              <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-[#FFFAF3]/60 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-              <div className="absolute top-0 left-1/2 w-[50%] h-[15%] border-b-2 border-x-2 border-[#FFFAF3]/60 -translate-x-1/2"></div>
-              <div className="absolute top-0 left-1/2 w-[25%] h-[5%] border-b-2 border-x-2 border-[#FFFAF3]/60 -translate-x-1/2"></div>
-              <div className="absolute top-[15%] left-1/2 w-12 h-6 border-b-2 border-x-2 border-[#FFFAF3]/60 rounded-b-full -translate-x-1/2"></div>
-              <div className="absolute bottom-0 left-1/2 w-[50%] h-[15%] border-t-2 border-x-2 border-[#FFFAF3]/60 -translate-x-1/2"></div>
-              <div className="absolute bottom-0 left-1/2 w-[25%] h-[5%] border-t-2 border-x-2 border-[#FFFAF3]/60 -translate-x-1/2"></div>
-              <div className="absolute bottom-[15%] left-1/2 w-12 h-6 border-t-2 border-x-2 border-[#FFFAF3]/60 rounded-t-full -translate-x-1/2"></div>
-            </div>
-
-            {/* Renderização dos Jogadores */}
-            {playersData.map((player, idx) => (
-              <PlayerButton
-                key={idx}
-                player={player}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2"
-                style={{
-                  left: `calc(${player.x}% * 0.92 + 4%)`,
-                  top: `calc(${player.y}% * 0.92 + 4%)`,
-                }}
-              />
+        <div className="relative w-full max-w-[500px] mx-auto lg:ml-auto">
+          {/* Componente do Gramado que criamos */}
+          <FootballCamp>
+            {previewSlots.map((slot, idx) => (
+              <PlayerButton key={idx} slot={slot} />
             ))}
-          </div>
+          </FootballCamp>
 
           {/* Deco elements para parecer prancheta/jornal */}
           <div className="absolute -bottom-6 -right-6 w-12 h-12 border-b-2 border-r-2 border-[#262626] pointer-events-none hidden sm:block"></div>
