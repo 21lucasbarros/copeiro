@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Player, PlayerButton } from "./ui/player-button";
 
 const playersData: Player[] = [
@@ -17,8 +18,11 @@ const playersData: Player[] = [
 ];
 
 export default function Landing() {
+  // Estado para controlar o modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <main className="min-h-screen bg-[#FFFAF3] text-[#262626] font-sans selection:bg-[#BF1A1A] selection:text-[#FFFAF3] flex items-center justify-center overflow-x-hidden">
+    <main className="min-h-screen bg-[#FFFAF3] text-[#262626] font-sans selection:bg-[#BF1A1A] selection:text-[#FFFAF3] flex items-center justify-center overflow-x-hidden relative">
       <div className="max-w-350 w-full px-6 py-12 md:py-20 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Lado Esquerdo: Conteúdo */}
         <div className="flex flex-col space-y-8 z-10 relative">
@@ -52,7 +56,10 @@ export default function Landing() {
             <button className="bg-[#BF1A1A] text-[#FFFAF3] px-8 py-4 uppercase font-black tracking-widest border-2 border-[#262626] shadow-[4px_4px_0px_#262626] hover:translate-y-1 hover:shadow-[0px_0px_0px_#262626] transition-all active:scale-95">
               Começar Campanha
             </button>
-            <button className="bg-[#FFFAF3] text-[#262626] px-8 py-4 uppercase font-bold tracking-widest border-2 border-[#262626] shadow-[4px_4px_0px_#262626] hover:bg-[#262626] hover:text-[#FFFAF3] hover:translate-y-1 hover:shadow-[0px_0px_0px_#262626] transition-all active:scale-95">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-[#FFFAF3] text-[#262626] px-8 py-4 uppercase font-bold tracking-widest border-2 border-[#262626] shadow-[4px_4px_0px_#262626] hover:bg-[#262626] hover:text-[#FFFAF3] hover:translate-y-1 hover:shadow-[0px_0px_0px_#262626] transition-all active:scale-95"
+            >
               Como Funciona
             </button>
           </div>
@@ -94,7 +101,6 @@ export default function Landing() {
 
         {/* Lado Direito: Prancheta / Campo Estilizado */}
         <div className="relative w-full max-w-125 mx-auto lg:ml-auto">
-          {/* Estilização do Campo com Gramado */}
           <div
             className="relative w-full aspect-3/4 border-4 border-[#262626] shadow-[8px_8px_0px_#262626] rounded-sm p-4 overflow-hidden"
             style={{
@@ -120,7 +126,7 @@ export default function Landing() {
               <div className="absolute bottom-[15%] left-1/2 w-12 h-6 border-t-2 border-x-2 border-[#FFFAF3]/60 rounded-t-full -translate-x-1/2"></div>
             </div>
 
-            {/* Renderização do nosso novo Componente PlayerButton */}
+            {/* Renderização dos Jogadores */}
             {playersData.map((player, idx) => (
               <PlayerButton
                 key={idx}
@@ -139,6 +145,108 @@ export default function Landing() {
           <div className="absolute -top-6 -left-6 w-12 h-12 border-t-2 border-l-2 border-[#262626] pointer-events-none hidden sm:block"></div>
         </div>
       </div>
+
+      {/* MODAL "COMO FUNCIONA" */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+          {/* Overlay Escuro */}
+          <div
+            className="absolute inset-0 bg-[#262626]/90 backdrop-blur-sm cursor-pointer"
+            onClick={() => setIsModalOpen(false)}
+          ></div>
+
+          {/* Caixa do Modal */}
+          <div className="bg-[#FFFAF3] border-4 border-[#262626] shadow-[8px_8px_0px_#262626] p-8 sm:p-12 max-w-3xl w-full relative z-10 animate-in fade-in zoom-in-95 duration-200">
+            {/* Botão Fechar (X) */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 flex items-center justify-center bg-[#FFFAF3] border-2 border-[#262626] shadow-[2px_2px_0px_#262626] hover:translate-y-0.5 hover:shadow-[0px_0px_0px_#262626] transition-all active:scale-95"
+            >
+              <span className="font-black text-xl leading-none pt-0.5 text-[#262626]">
+                X
+              </span>
+            </button>
+
+            <h2 className="font-serif text-3xl sm:text-5xl uppercase mb-10 text-[#262626] border-b-2 border-[#262626]/10 pb-6 pr-12">
+              Regras do <span className="text-[#BF1A1A] italic">Draft</span>
+            </h2>
+
+            {/* Lista de Passos */}
+            <div className="flex flex-col gap-8 sm:gap-10">
+              {/* Passo 01 */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start">
+                <span className="font-serif text-5xl sm:text-6xl text-[#BF1A1A] font-black leading-none shrink-0 mt-1">
+                  01
+                </span>
+                <div>
+                  <h3 className="font-serif text-xl sm:text-2xl uppercase font-bold text-[#262626] mb-2">
+                    Role
+                  </h3>
+                  <p
+                    className="text-[#262626]/80 font-medium text-base sm:text-lg leading-relaxed max-w-lg"
+                    style={{ fontFamily: "'Roboto', sans-serif" }}
+                  >
+                    A roleta define o seu destino. Sorteie uma edição histórica
+                    da taça, descubra qual camisa pesada você vai defender e
+                    receba a sua formação tática.
+                  </p>
+                </div>
+              </div>
+
+              {/* Passo 02 */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start">
+                <span className="font-serif text-5xl sm:text-6xl text-[#BF1A1A] font-black leading-none shrink-0 mt-1">
+                  02
+                </span>
+                <div>
+                  <h3 className="font-serif text-xl sm:text-2xl uppercase font-bold text-[#262626] mb-2">
+                    Monte
+                  </h3>
+                  <p
+                    className="text-[#262626]/80 font-medium text-base sm:text-lg leading-relaxed max-w-lg"
+                    style={{ fontFamily: "'Roboto', sans-serif" }}
+                  >
+                    A responsabilidade é sua. Escale lendas, medalhões e craques
+                    que honraram essa camisa na época. Monte o 11 inicial
+                    perfeito para não passar vergonha.
+                  </p>
+                </div>
+              </div>
+
+              {/* Passo 03 */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start">
+                <span className="font-serif text-5xl sm:text-6xl text-[#BF1A1A] font-black leading-none shrink-0 mt-1">
+                  03
+                </span>
+                <div>
+                  <h3 className="font-serif text-xl sm:text-2xl uppercase font-bold text-[#262626] mb-2">
+                    Simule
+                  </h3>
+                  <p
+                    className="text-[#262626]/80 font-medium text-base sm:text-lg leading-relaxed max-w-lg"
+                    style={{ fontFamily: "'Roboto', sans-serif" }}
+                  >
+                    Vá para o mata-mata. Enfrente pedreiras, catimba e pressão.
+                    Sobreviva à campanha e prove que o seu elenco tem a mística
+                    para levantar a bendita taça!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Final do Modal */}
+            <div className="mt-12 pt-8 border-t-2 border-[#262626]/10 flex justify-center">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-[#BF1A1A] text-[#FFFAF3] px-10 py-4 uppercase font-black tracking-widest border-2 border-[#262626] shadow-[4px_4px_0px_#262626] hover:translate-y-1 hover:shadow-[0px_0px_0px_#262626] transition-all active:scale-95 w-full sm:w-auto"
+                style={{ fontFamily: "'Roboto', sans-serif" }}
+              >
+                Entendido, Vamos Jogar!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

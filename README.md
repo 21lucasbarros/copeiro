@@ -1,78 +1,132 @@
-# 🏆 Copeiro
+# Copeiro
 
-> O simulador de navegador definitivo para os saudosistas do futebol sul-americano. Monte seu esquadrão histórico, defina sua tática e sobreviva ao caos do mata-mata continental.
+> Um simulador de futebol para navegador inspirado na nostalgia do futebol sul-americano. Monte seu time histórico, escolha sua estratégia e tente sobreviver ao caos de uma campanha continental.
 
 ![Status](https://img.shields.io/badge/Status-Em_Desenvolvimento-yellow)
 ![Stack](https://img.shields.io/badge/Stack-Next.js_|_Tailwind_|_Zustand-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-## 📖 Sobre o Projeto
+## Sobre o projeto
 
-O **Copeiro** é um jogo casual de navegador focado em gerenciamento rápido e nostalgia. Inspirado nos clássicos jogos em Flash e almanaques esportivos, o jogador assume a prancheta de um time, sorteia jogadores de elencos lendários do continente sul-americano (com nomes adaptados para evitar problemas de direitos autorais, ex: _Tricolor Paulista 2005_, _Rubro-Negro Carioca 1981_) e simula uma campanha completa rumo à glória eterna.
+O **Copeiro** é um jogo de navegador focado em gerenciamento, estratégia e nostalgia. A ideia nasceu da vontade de recriar aquela sensação dos antigos jogos em Flash e dos almanaques de futebol: montar um elenco, escolher uma formação e acompanhar uma campanha cheia de histórias inesperadas.
 
-## ✨ Funcionalidades Principais
+O jogador assume o papel de treinador de uma equipe, monta seu onze inicial com jogadores de times históricos do futebol sul-americano e disputa uma competição completa em busca do título.
 
-- **🎲 Draft Histórico:** Role os dados e monte seus 11 titulares selecionando jogadores de equipes históricas. O _overall_ (força) do seu time é calculado com base nas suas escolhas.
-- **📋 Táticas e Estilos:** Escolha entre formações clássicas (4-3-3, 3-5-2, 4-4-2) e defina a postura do time (Retranca, Equilibrado, Ofensivo).
-- **⚙️ Modos de Jogo:**
-  - _Clássico:_ Veja os atributos de todos os jogadores na hora de montar o time.
-  - _Almanaque:_ Jogue às cegas, baseando-se apenas no seu conhecimento histórico. Os atributos só são revelados no fim.
-- **⚽ Motor de Simulação Completo:**
-  - **Fase de Grupos:** Simulação de 3 partidas rápidas (ida) em um formato de mini-liga, calculando pontos e saldo de gols para classificar ao mata-mata.
-  - **Mata-Mata (Oitavas até a Final):** A verdadeira tensão sul-americana. Jogos decisivos com simulação de autores dos gols e decisões por pênaltis.
-- **📸 Geração de Card Final (Shareable):** Ao final da campanha, o jogo gera um "Box Score" estilizado (estilo jornal esportivo retrô) contendo o placar da campanha (ex: _5 Vitórias, 1 Derrota_), gols pró/sofridos e a lista de jogadores selecionados para facilitar o compartilhamento no Twitter e WhatsApp.
+Para evitar o uso de propriedades oficiais, os clubes são representados por nomes inspirados em suas histórias, como *Tricolor Paulista 2005* ou *Rubro-Negro Carioca 1981*.
 
-## 🛠️ Stack Tecnológica
+## Funcionalidades
 
-O projeto foi desenhado com foco em performance no _client-side_ (zero custo de servidor para as simulações matemáticas) e viralização orgânica:
+### Draft histórico
 
-- **Front-end:** [Next.js (App Router)](https://nextjs.org/) + [React](https://react.dev/)
-- **Estilização:** [Tailwind CSS](https://tailwindcss.com/) (Interface responsiva, minimalista e com temática retrô/almanaque)
-- **Gerenciamento de Estado:** [Zustand](https://github.com/pmndrs/zustand) (Controle do fluxo de telas: Draft -> Grupos -> Mata-Mata -> Resultados, mantendo o estado da simulação sem re-renders desnecessários)
-- **Geração de Imagem (Open Graph):** `@vercel/og` (Para gerar thumbnails dinâmicas dos resultados ao compartilhar links)
-- **Hospedagem:** [Vercel](https://vercel.com/) (Edge network para carregamento instantâneo)
+Monte seu elenco escolhendo jogadores de equipes lendárias. Cada escolha influencia a força final do time, calculada através dos atributos individuais dos jogadores.
 
-## 🚀 Como rodar localmente
+### Táticas e estilos de jogo
 
-Siga os passos abaixo para rodar o jogo na sua máquina:
+Defina como sua equipe vai jogar escolhendo:
 
-### 1. Clone o repositório
+* Formações clássicas como 4-3-3, 3-5-2 e 4-4-2
+* Estilo de jogo entre defensivo, equilibrado e ofensivo
+
+Suas decisões influenciam diretamente os confrontos durante a campanha.
+
+### Modos de jogo
+
+**Clássico**
+
+Tenha acesso aos atributos dos jogadores durante a montagem do time e monte sua equipe buscando o melhor desempenho possível.
+
+**Almanaque**
+
+Uma experiência baseada em conhecimento histórico. Os atributos ficam escondidos e você precisa confiar na memória para montar o elenco.
+
+### Sistema de simulação
+
+A engine do jogo simula uma campanha completa:
+
+* Fase de grupos em formato de mini-liga
+* Classificação através de pontos e saldo de gols
+* Mata-mata com partidas decisivas
+* Disputas por pênaltis
+* Geração de resultados e autores dos gols
+
+A ideia é criar aquele clima imprevisível dos torneios sul-americanos, onde favoritismo nem sempre garante vitória.
+
+### Card final da campanha
+
+Ao terminar uma campanha, o jogo gera um resumo visual com os principais dados da trajetória:
+
+* Campanha geral
+* Vitórias, derrotas e empates
+* Gols marcados e sofridos
+* Escalação escolhida
+
+O objetivo é transformar cada campanha em uma história compartilhável.
+
+## Tecnologias utilizadas
+
+O projeto foi pensado para rodar totalmente no navegador, deixando toda a lógica de simulação no lado do cliente.
+
+* **Frontend:** Next.js (App Router) + React
+* **Estilização:** Tailwind CSS
+* **Gerenciamento de estado:** Zustand
+* **Geração de imagens:** @vercel/og
+* **Hospedagem:** Vercel
+
+## Como rodar localmente
+
+Clone o projeto:
 
 ```bash
 git clone https://github.com/21lucasbarros/copeiro.git
 cd copeiro
 ```
 
-### 2. Instale as dependências
-
-Você pode usar npm, yarn, pnpm ou bun:
+Instale as dependências:
 
 ```bash
 npm install
-# ou
+```
+
+ou
+
+```bash
 bun install
 ```
 
-### 3. Rode o servidor de desenvolvimento
+Execute o projeto:
 
 ```bash
 npm run dev
-# ou
+```
+
+ou
+
+```bash
 bun run dev
 ```
 
-O jogo estará disponível em http://localhost:3000.
+O projeto estará disponível em:
 
-## 🧠 Arquitetura e Lógica de Simulação
+```
+http://localhost:3000
+```
 
-A engine de jogo roda 100% no navegador do cliente (Client-Side). A probabilidade de vitória de uma equipe contra a outra em um jogo de mata-mata é calculada através de uma fórmula matemática pura que leva em consideração:
+## Como funciona a simulação
 
-- O Overall médio dos 11 titulares.
-- A sinergia da tática escolhida contra a tática gerada automaticamente para o adversário da CPU.
-- Fator de aleatoriedade (RNG) para emular as famosas "zebras" e o peso da camisa.
+A engine funciona totalmente no navegador e utiliza uma fórmula baseada em alguns fatores:
 
-## ⚖️ Aviso Legal (Disclaimer)
+* Overall médio do time
+* Qualidade do elenco escolhido
+* Compatibilidade da formação
+* Estilo de jogo
+* Fator aleatório para representar zebras e momentos inesperados
 
-Este é um projeto de fã feito como homenagem à história do futebol sul-americano. Nenhum nome, escudo, marca registrada ou propriedade intelectual oficial da CONMEBOL, CBF ou clubes oficiais é utilizado neste jogo. Todos os times e atletas fazem uso de nomes genéricos, paródias ou associações geográficas de domínio público.
+A intenção não é criar uma simulação totalmente previsível, mas sim reproduzir o sentimento de uma competição onde qualquer coisa pode acontecer.
 
-Feito com ☕ e sofrimento futebolístico por Lucas Barros Simon.
+## Aviso legal
+
+O Copeiro é um projeto independente feito como homenagem ao futebol sul-americano.
+
+Nenhum escudo, nome oficial de clube, marca registrada ou propriedade intelectual de entidades esportivas é utilizado. Times e jogadores são representados através de nomes genéricos, referências históricas ou adaptações criadas exclusivamente para fins de entretenimento.
+
+Feito por Lucas Barros Simon.
