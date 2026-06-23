@@ -53,7 +53,7 @@ const TACTICS: Record<string, Record<string, Omit<FieldSlot, "player">[]>> = {
       { pos: "LE", x: 14, y: 64 },
       { pos: "VOL", x: 50, y: 56 },
       { pos: "MC", x: 70, y: 46 },
-      { pos: "MC", x: 30, y: 46 },
+      { pos: "MEI", x: 30, y: 46 },
       { pos: "PD", x: 80, y: 24 },
       { pos: "CA", x: 50, y: 14 },
       { pos: "PE", x: 20, y: 24 },
@@ -64,8 +64,8 @@ const TACTICS: Record<string, Record<string, Omit<FieldSlot, "player">[]>> = {
       { pos: "ZAG", x: 68, y: 75 },
       { pos: "ZAG", x: 32, y: 75 },
       { pos: "LE", x: 14, y: 64 },
-      { pos: "VOL", x: 50, y: 56 },
-      { pos: "MEI", x: 75, y: 40 },
+      { pos: "CM", x: 50, y: 56 },
+      { pos: "CM", x: 75, y: 45 },
       { pos: "MEI", x: 25, y: 40 },
       { pos: "PD", x: 80, y: 24 },
       { pos: "CA", x: 50, y: 14 },
@@ -75,42 +75,42 @@ const TACTICS: Record<string, Record<string, Omit<FieldSlot, "player">[]>> = {
   "4-4-2": {
     Retranca: [
       { pos: "GOL", x: 50, y: 88 },
-      { pos: "LD", x: 86, y: 64 },
-      { pos: "ZAG", x: 68, y: 75 },
-      { pos: "ZAG", x: 32, y: 75 },
-      { pos: "LE", x: 14, y: 64 },
-      { pos: "VOL", x: 60, y: 54 },
-      { pos: "VOL", x: 40, y: 54 },
-      { pos: "MD", x: 82, y: 46 },
-      { pos: "ME", x: 18, y: 46 },
-      { pos: "CA", x: 65, y: 20 },
-      { pos: "CA", x: 35, y: 20 },
+      { pos: "LD", x: 82, y: 70 },
+      { pos: "ZAG", x: 65, y: 72 },
+      { pos: "ZAG", x: 35, y: 72 },
+      { pos: "LE", x: 18, y: 70 },
+      { pos: "MD", x: 82, y: 45 },
+      { pos: "VOL", x: 62, y: 55 },
+      { pos: "VOL", x: 38, y: 55 },
+      { pos: "ME", x: 18, y: 45 },
+      { pos: "CA", x: 60, y: 22 },
+      { pos: "CA", x: 40, y: 22 },
     ],
     Equilibrado: [
       { pos: "GOL", x: 50, y: 88 },
-      { pos: "LD", x: 86, y: 64 },
-      { pos: "ZAG", x: 68, y: 75 },
-      { pos: "ZAG", x: 32, y: 75 },
-      { pos: "LE", x: 14, y: 64 },
-      { pos: "VOL", x: 50, y: 54 },
-      { pos: "MC", x: 50, y: 42 },
-      { pos: "MEI", x: 80, y: 46 },
-      { pos: "MEI", x: 20, y: 46 },
-      { pos: "CA", x: 65, y: 20 },
-      { pos: "CA", x: 35, y: 20 },
+      { pos: "LD", x: 82, y: 68 },
+      { pos: "ZAG", x: 65, y: 70 },
+      { pos: "ZAG", x: 35, y: 70 },
+      { pos: "LE", x: 18, y: 68 },
+      { pos: "MD", x: 82, y: 38 },
+      { pos: "VOL", x: 62, y: 48 },
+      { pos: "MC", x: 38, y: 48 },
+      { pos: "ME", x: 18, y: 38 },
+      { pos: "CA", x: 60, y: 20 },
+      { pos: "CA", x: 40, y: 20 },
     ],
     Ofensivo: [
       { pos: "GOL", x: 50, y: 88 },
-      { pos: "LD", x: 86, y: 64 },
-      { pos: "ZAG", x: 68, y: 75 },
-      { pos: "ZAG", x: 32, y: 75 },
-      { pos: "LE", x: 14, y: 64 },
+      { pos: "LD", x: 82, y: 66 },
+      { pos: "ZAG", x: 65, y: 68 },
+      { pos: "ZAG", x: 35, y: 68 },
+      { pos: "LE", x: 18, y: 66 },
       { pos: "VOL", x: 50, y: 56 },
-      { pos: "MEI", x: 70, y: 42 },
-      { pos: "MEI", x: 30, y: 42 },
-      { pos: "PD", x: 80, y: 24 },
-      { pos: "CA", x: 65, y: 20 },
-      { pos: "CA", x: 35, y: 20 },
+      { pos: "MC", x: 72, y: 46 },
+      { pos: "MC", x: 28, y: 46 },
+      { pos: "MEI", x: 50, y: 36 },
+      { pos: "CA", x: 60, y: 20 },
+      { pos: "CA", x: 40, y: 20 },
     ],
   },
   "3-5-2": {
@@ -246,21 +246,21 @@ export default function DraftBoard() {
   const [difficulty, setDifficulty] = useState("Normal");
   const [style, setStyle] = useState("Equilibrado");
 
-  // Estados do Draft
+  // estados do Draft
   const [team, setTeam] = useState(MOCK_TEAMS[0]);
   const [edition, setEdition] = useState(MOCK_EDITIONS[0]);
   const [field, setField] = useState<FieldSlot[]>([]);
   const [pool, setPool] = useState<Player[]>(MOCK_POOL);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
-  // Calcula o campo em tempo real durante o setup
+  // calcula o campo em tempo real durante o setup
   const currentSetupField = TACTICS[formation][style].map((pos) => ({
     ...pos,
     player: null,
   }));
   const activeField = phase === "setup" ? currentSetupField : field;
 
-  // Iniciar o Draft
+  // iniciar o Draft
   const startDraft = () => {
     setField(currentSetupField);
     randomizeTeam();

@@ -42,7 +42,12 @@ const previewSlots: FieldSlot[] = [
     pos: "ZAG",
     x: 32,
     y: 75,
-    player: { id: "4", name: "Lugano", shortName: "Lugano", position: ["ZAG"] },
+    player: {
+      id: "4",
+      name: "Gustavo Gómez",
+      shortName: "G. Gómez",
+      position: ["ZAG"],
+    },
   },
   {
     pos: "LE",
