@@ -5,6 +5,7 @@ export interface Player {
   name: string;
   shortName: string;
   position: string[]; // agora é um array, ex: ["PE", "CA"]
+  jerseyNumber?: number;
 }
 
 export interface FieldSlot {
