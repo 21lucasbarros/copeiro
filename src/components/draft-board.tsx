@@ -34,7 +34,6 @@ export default function DraftBoard() {
             isRollingEdition={state.isRollingEdition}
             isRollingPlayers={state.isRollingPlayers}
             rerollsLeft={state.rerollsLeft}
-            hasPlacedPlayers={state.hasPlacedPlayers}
             emptyFieldPositions={state.emptyFieldPositions}
             onRandomizeTeam={actions.handleRandomizeTeam}
             onRandomizeEdition={actions.handleRandomizeEdition}
@@ -45,16 +44,23 @@ export default function DraftBoard() {
       <div className="lg:col-span-7 flex justify-center items-center">
         <FootballCamp>
           {state.activeField.map((slot, idx) => {
-            const isDimmed =
-              state.selectedPlayerId &&
+            const isSelecting =
+              state.selectedPlayerId !== null || state.movingSlotIndex !== null;
+
+            const isBeingMoved = state.movingSlotIndex === idx;
+
+            const isValidTarget =
+              isSelecting &&
               !slot.player &&
-              !state.validPositionsForSelected.includes(slot.pos);
+              state.validPositionsForSelected.includes(slot.pos);
+
+            const isDimmed = isSelecting && !slot.player && !isValidTarget;
 
             return (
               <PlayerButton
                 key={idx}
                 slot={slot}
-                isActive={state.selectedPlayerId !== null && !slot.player}
+                isActive={isBeingMoved || isValidTarget}
                 onClick={() => actions.handleSlotClick(idx)}
                 className={`absolute transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${isDimmed ? "opacity-30 grayscale" : "opacity-100"}`}
               />

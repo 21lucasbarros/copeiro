@@ -1,25 +1,19 @@
 import { FieldSlot, Player } from "@/components/ui/player-button";
+import { PLAYERS_DB, POSITIONS, Position } from "./players-db";
 
-export const MOCK_TEAMS = ["Corinthians", "Santos"];
+export const MOCK_TEAMS = Object.keys(PLAYERS_DB);
 
-export const MOCK_EDITIONS = ["2012"];
+export const MOCK_EDITIONS = Array.from(
+  new Set(
+    Object.values(PLAYERS_DB)
+      .flat()
+      .map((p) => p.edition.toString()),
+  ),
+).sort((a, b) => parseInt(b) - parseInt(a));
 
-export const ALL_POSITIONS = [
-  "GOL",
-  "LD",
-  "ZAG",
-  "LE",
-  "VOL",
-  "MC",
-  "MEI",
-  "MD",
-  "ME",
-  "PD",
-  "PE",
-  "CA",
-];
+export const ALL_POSITIONS = [...POSITIONS];
 
-const POSITION_ORDER: Record<string, number> = {
+const POSITION_ORDER: Record<Position, number> = {
   GOL: 1,
   LD: 2,
   ZAG: 3,
@@ -30,224 +24,8 @@ const POSITION_ORDER: Record<string, number> = {
   MD: 8,
   ME: 9,
   PD: 10,
-  PE: 11,
-  CA: 12,
-};
-
-export const NAMES_BY_TEAM: Record<string, string[]> = {
-  Corinthians: [
-    "Cássio",
-    "Júlio César",
-    "Danilo Fernandes",
-    "Alessandro",
-    "Welder",
-    "Chicão",
-    "L. Castán",
-    "Paulo André",
-    "Marquinhos",
-    "Fábio Santos",
-    "Ramon",
-    "Ralf",
-    "Paulinho",
-    "Edenílson",
-    "Ramírez",
-    "Danilo",
-    "Douglas",
-    "Alex",
-    "Willian",
-    "J. Henrique",
-    "E. Sheik",
-    "Romarinho",
-    "Liédson",
-    "Élton",
-    "Gilsinho",
-  ],
-  Santos: [
-    "Rafael",
-    "Aranha",
-    "Vladimir",
-    "Fucile",
-    "Galhardo",
-    "Edu Dracena",
-    "Durval",
-    "Bruno Rodrigo",
-    "Léo",
-    "Juan",
-    "Arouca",
-    "Henrique",
-    "Adriano",
-    "Ibson",
-    "Elano",
-    "Ganso",
-    "F. Anderson",
-    "G. Magrão",
-    "Bernardo",
-    "Neymar",
-    "Borges",
-    "Alan Kardec",
-    "Dimba",
-    "W. Rentería",
-    "Maranhão",
-  ],
-};
-
-export const NUMBERS_BY_PLAYER: Record<string, number> = {
-  "Júlio César": 1,
-  Alessandro: 2,
-  Chicão: 3,
-  "L. Castán": 4,
-  Ralf: 5,
-  "Fábio Santos": 6,
-  Willian: 7,
-  Paulinho: 8,
-  Liédson: 9,
-  Douglas: 10,
-  "E. Sheik": 11,
-  Alex: 12,
-  "Paulo André": 13,
-  Ramírez: 14,
-  Edenílson: 15,
-  Ramon: 16,
-  Gilsinho: 17,
-  Welder: 18,
-  Élton: 19,
-  Danilo: 20,
-  Romarinho: 21,
-  "Danilo Fernandes": 22,
-  "J. Henrique": 23,
-  Cássio: 24,
-  Marquinhos: 25,
-  Rafael: 1,
-  "Edu Dracena": 2,
-  Léo: 3,
-  Fucile: 4,
-  Arouca: 5,
-  Durval: 6,
-  Henrique: 7,
-  Elano: 8,
-  Borges: 9,
-  Ganso: 10,
-  Neymar: 11,
-  Aranha: 12,
-  "Bruno Rodrigo": 13,
-  Ibson: 14,
-  Juan: 15,
-  Adriano: 16,
-  "G. Magrão": 17,
-  Bernardo: 18,
-  "Alan Kardec": 19,
-  "F. Anderson": 20,
-  Dimba: 21,
-  Vladimir: 22,
-  Galhardo: 23,
-  "W. Rentería": 24,
-  Maranhão: 25,
-};
-
-export const RATINGS_BY_PLAYER: Record<string, number> = {
-  Cássio: 85,
-  "Júlio César": 74,
-  "Danilo Fernandes": 71,
-  Alessandro: 78,
-  Welder: 72,
-  Chicão: 81,
-  "L. Castán": 83,
-  "Paulo André": 79,
-  Marquinhos: 74,
-  "Fábio Santos": 80,
-  Ramon: 73,
-  Ralf: 84,
-  Paulinho: 87,
-  Edenílson: 76,
-  Ramírez: 74,
-  Danilo: 85,
-  Douglas: 79,
-  Alex: 82,
-  Willian: 78,
-  "J. Henrique": 80,
-  "E. Sheik": 86,
-  Romarinho: 78,
-  Liédson: 77,
-  Élton: 73,
-  Gilsinho: 72,
-  Rafael: 82,
-  Aranha: 75,
-  Vladimir: 70,
-  Fucile: 78,
-  Galhardo: 73,
-  "Edu Dracena": 81,
-  Durval: 79,
-  "Bruno Rodrigo": 76,
-  Léo: 77,
-  Juan: 75,
-  Arouca: 83,
-  Henrique: 80,
-  Adriano: 76,
-  Ibson: 77,
-  Elano: 79,
-  Ganso: 84,
-  "F. Anderson": 75,
-  "G. Magrão": 73,
-  Bernardo: 74,
-  Neymar: 92,
-  Borges: 80,
-  "Alan Kardec": 79,
-  Dimba: 70,
-  "W. Rentería": 72,
-  Maranhão: 71,
-};
-
-export const POSITIONS_BY_PLAYER: Record<string, string[]> = {
-  Cássio: ["GOL"],
-  "Júlio César": ["GOL"],
-  "Danilo Fernandes": ["GOL"],
-  Alessandro: ["LD"],
-  Welder: ["LD"],
-  Chicão: ["ZAG"],
-  "L. Castán": ["ZAG"],
-  "Paulo André": ["ZAG"],
-  Marquinhos: ["ZAG"],
-  "Fábio Santos": ["LE"],
-  Ramon: ["LE"],
-  Ralf: ["VOL"],
-  Paulinho: ["VOL", "MC"],
-  Edenílson: ["VOL", "LD", "MD"],
-  Ramírez: ["MEI", "MC"],
-  Danilo: ["MEI", "MC"],
-  Douglas: ["MEI"],
-  Alex: ["MEI"],
-  Willian: ["PE", "PD"],
-  "J. Henrique": ["PD", "MD"],
-  "E. Sheik": ["PE", "CA", "PD"],
-  Romarinho: ["PE", "CA"],
-  Liédson: ["CA"],
-  Élton: ["CA"],
-  Gilsinho: ["PD", "PE"],
-  Rafael: ["GOL"],
-  Aranha: ["GOL"],
-  Vladimir: ["GOL"],
-  Fucile: ["LD", "LE"],
-  Galhardo: ["LD"],
-  "Edu Dracena": ["ZAG"],
-  Durval: ["ZAG", "LE"],
-  "Bruno Rodrigo": ["ZAG"],
-  Léo: ["LE"],
-  Juan: ["LE"],
-  Arouca: ["VOL", "MC"],
-  Henrique: ["VOL", "ZAG"],
-  Adriano: ["VOL"],
-  Ibson: ["VOL", "MC"],
-  Elano: ["MEI", "MC"],
-  Ganso: ["MEI"],
-  "F. Anderson": ["MEI"],
-  "G. Magrão": ["MEI", "VOL"],
-  Bernardo: ["MEI", "PE"],
-  Neymar: ["PE", "CA", "PD"],
-  Borges: ["CA"],
-  "Alan Kardec": ["CA"],
-  Dimba: ["CA"],
-  "W. Rentería": ["CA", "PD"],
-  Maranhão: ["MD", "LD"],
+  CA: 11,
+  PE: 12,
 };
 
 export const TACTICS: Record<
@@ -465,25 +243,21 @@ export const generatePlayersForTeam = (
   team: string,
   _currentField?: FieldSlot[],
 ): Player[] => {
-  const names = NAMES_BY_TEAM[team] || [];
+  const teamPlayers = PLAYERS_DB[team] || [];
 
-  const pool: Player[] = names.map((name) => {
-    const rating = RATINGS_BY_PLAYER[name] || 75;
-    const positions = POSITIONS_BY_PLAYER[name] || ["MC"];
-    const jerseyNumber = NUMBERS_BY_PLAYER[name] || 0;
-
+  const pool: Player[] = teamPlayers.map((playerData) => {
     return {
-      id: `${rating}-${Math.random().toString(36).substring(2, 7)}`,
-      name: name,
-      shortName: name,
-      position: positions,
-      jerseyNumber: jerseyNumber,
+      id: `${playerData.rating}-${Math.random().toString(36).substring(2, 7)}`,
+      name: playerData.name,
+      shortName: playerData.name,
+      position: playerData.positions,
+      jerseyNumber: playerData.jerseyNumber,
     } as Player;
   });
 
   return pool.sort((a, b) => {
-    const posOrderA = POSITION_ORDER[a.position[0]] || 99;
-    const posOrderB = POSITION_ORDER[b.position[0]] || 99;
+    const posOrderA = POSITION_ORDER[a.position[0] as Position] || 99;
+    const posOrderB = POSITION_ORDER[b.position[0] as Position] || 99;
 
     if (posOrderA !== posOrderB) {
       return posOrderA - posOrderB;

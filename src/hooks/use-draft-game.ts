@@ -17,6 +17,7 @@ export function useDraftGame() {
   const [field, setField] = useState<FieldSlot[]>([]);
   const [pool, setPool] = useState<Player[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const [movingSlotIndex, setMovingSlotIndex] = useState<number | null>(null);
   const [isRollingTeam, setIsRollingTeam] = useState(false);
   const [isRollingEdition, setIsRollingEdition] = useState(false);
   const [isRollingPlayers, setIsRollingPlayers] = useState(false);
@@ -24,12 +25,18 @@ export function useDraftGame() {
 
   const currentSetupField =
     TACTICS[formation]?.[style]?.map((pos) => ({ ...pos, player: null })) || [];
+
   const activeField = phase === "setup" ? currentSetupField : field;
+
   const hasPlacedPlayers = field.some((s) => s.player !== null);
+
+  const emptyFieldPositions = field.filter((s) => !s.player).map((s) => s.pos);
+
   const validPositionsForSelected = selectedPlayerId
     ? pool.find((p) => p.id === selectedPlayerId)?.position || []
-    : [];
-  const emptyFieldPositions = field.filter((s) => !s.player).map((s) => s.pos);
+    : movingSlotIndex !== null
+      ? field[movingSlotIndex].player?.position || []
+      : [];
 
   useEffect(() => {
     if (
@@ -85,6 +92,8 @@ export function useDraftGame() {
     setPhase("draft");
     setRerollsLeft(3);
     setIsRollingPlayers(true);
+    setMovingSlotIndex(null);
+    setSelectedPlayerId(null);
     animateSystemRoll(MOCK_TEAMS, setTeam, setIsRollingTeam);
     animateSystemRoll(MOCK_EDITIONS, setEdition, setIsRollingEdition);
   };
@@ -94,6 +103,8 @@ export function useDraftGame() {
       setRerollsLeft((prev) => prev - 1);
       setPool([]);
       setIsRollingPlayers(true);
+      setMovingSlotIndex(null);
+      setSelectedPlayerId(null);
       animateSystemRoll(MOCK_TEAMS, setTeam, setIsRollingTeam);
     }
   };
@@ -103,6 +114,8 @@ export function useDraftGame() {
       setRerollsLeft((prev) => prev - 1);
       setPool([]);
       setIsRollingPlayers(true);
+      setMovingSlotIndex(null);
+      setSelectedPlayerId(null);
       animateSystemRoll(MOCK_EDITIONS, setEdition, setIsRollingEdition);
     }
   };
@@ -118,38 +131,62 @@ export function useDraftGame() {
 
     const slot = field[index];
 
-    if (slot.player) {
-      setPool([...pool, slot.player]);
-      const newField = [...field];
-      newField[index].player = null;
-      setField(newField);
-      return;
-    }
+    if (!slot.player) {
+      if (movingSlotIndex !== null) {
+        const playerToMove = field[movingSlotIndex].player;
 
-    if (selectedPlayerId) {
-      const playerToPlace = pool.find((p) => p.id === selectedPlayerId)!;
-
-      if (!playerToPlace.position.includes(slot.pos)) {
-        alert(
-          `${playerToPlace.shortName} não atua como ${slot.pos}. Posições válidas: ${playerToPlace.position.join(", ")}`,
-        );
+        if (playerToMove && playerToMove.position.includes(slot.pos)) {
+          const newField = [...field];
+          newField[index].player = playerToMove;
+          newField[movingSlotIndex].player = null;
+          setField(newField);
+        } else if (playerToMove) {
+          alert(
+            `${playerToMove.shortName} não atua como ${slot.pos}. Posições válidas: ${playerToMove.position.join(", ")}`,
+          );
+        }
+        setMovingSlotIndex(null);
         return;
       }
 
-      const newField = [...field];
-      newField[index].player = playerToPlace;
-      setField(newField);
-      setSelectedPlayerId(null);
+      if (selectedPlayerId) {
+        const playerToPlace = pool.find((p) => p.id === selectedPlayerId);
 
-      const remainingEmpty = newField.filter((s) => !s.player);
-      if (remainingEmpty.length > 0) {
-        setPool([]);
-        setIsRollingPlayers(true);
-        animateSystemRoll(MOCK_TEAMS, setTeam, setIsRollingTeam);
-        animateSystemRoll(MOCK_EDITIONS, setEdition, setIsRollingEdition);
+        if (!playerToPlace) return;
+
+        if (!playerToPlace.position.includes(slot.pos)) {
+          alert(
+            `${playerToPlace.shortName} não atua como ${slot.pos}. Posições válidas: ${playerToPlace.position.join(", ")}`,
+          );
+          return;
+        }
+
+        const newField = [...field];
+        newField[index].player = playerToPlace;
+        setField(newField);
+        setSelectedPlayerId(null);
+        setMovingSlotIndex(null);
+
+        const remainingEmpty = newField.filter((s) => !s.player);
+        if (remainingEmpty.length > 0) {
+          setPool([]);
+          setIsRollingPlayers(true);
+          animateSystemRoll(MOCK_TEAMS, setTeam, setIsRollingTeam);
+          animateSystemRoll(MOCK_EDITIONS, setEdition, setIsRollingEdition);
+        } else {
+          setPool([]);
+          setIsRollingPlayers(false);
+        }
+      }
+      return;
+    }
+
+    if (slot.player) {
+      if (movingSlotIndex === index) {
+        setMovingSlotIndex(null);
       } else {
-        setPool([]);
-        setIsRollingPlayers(false);
+        setMovingSlotIndex(index);
+        setSelectedPlayerId(null);
       }
     }
   };
@@ -164,6 +201,7 @@ export function useDraftGame() {
       edition,
       pool,
       selectedPlayerId,
+      movingSlotIndex,
       isRollingTeam,
       isRollingEdition,
       isRollingPlayers,
@@ -174,7 +212,13 @@ export function useDraftGame() {
       emptyFieldPositions,
       field,
     },
-    setters: { setFormation, setDifficulty, setStyle, setSelectedPlayerId },
+    setters: {
+      setFormation,
+      setDifficulty,
+      setStyle,
+      setSelectedPlayerId,
+      setMovingSlotIndex,
+    },
     actions: {
       startDraft,
       handleRandomizeTeam,

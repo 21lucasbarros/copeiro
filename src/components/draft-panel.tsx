@@ -11,7 +11,6 @@ interface DraftPanelProps {
   isRollingEdition: boolean;
   isRollingPlayers: boolean;
   rerollsLeft: number;
-  hasPlacedPlayers: boolean;
   emptyFieldPositions: string[];
   onRandomizeTeam: () => void;
   onRandomizeEdition: () => void;
@@ -122,9 +121,20 @@ export function DraftPanel({
           ) : (
             <>
               {pool.map((p) => {
-                const isPlayable = p.position.some((pos) =>
+                // 1. Verifica se o jogador JÁ ESTÁ NO CAMPO baseado no nome
+                const isAlreadyDrafted = field.some(
+                  (slot) => slot.player?.shortName === p.shortName,
+                );
+
+                // 2. Verifica se ainda há vaga para a posição de ofício dele
+                const canPlayInRemainingPositions = p.position.some((pos) =>
                   emptyFieldPositions.includes(pos),
                 );
+
+                // 3. Só pode ser selecionado se NÃO estiver no campo e SE tiver vaga na posição
+                const isPlayable =
+                  !isAlreadyDrafted && canPlayInRemainingPositions;
+
                 return (
                   <button
                     key={p.id}
@@ -142,7 +152,7 @@ export function DraftPanel({
                     >
                       {p.jerseyNumber ? `#${p.jerseyNumber}` : ""}
                     </span>
-                    <span className="font-black text-base sm:text-lg flex-1 text-left">
+                    <span className="font-black text-base sm:text-lg flex-1 text-left line-clamp-1">
                       {p.shortName}
                     </span>
                     <div className="flex items-center justify-end w-20 sm:w-24">
@@ -152,8 +162,16 @@ export function DraftPanel({
                         {p.position.join("/")}
                       </span>
                     </div>
-                    <span className="font-black text-lg sm:text-xl text-right w-10 sm:w-12 ml-2">
-                      {p.id.split("-")[0]}
+
+                    {/* Altera visualmente para mostrar que já foi pego */}
+                    <span className="font-black text-lg sm:text-xl text-right w-[50px] ml-2">
+                      {isAlreadyDrafted ? (
+                        <span className="text-[8px] sm:text-[9px] text-[#BF1A1A] uppercase tracking-tighter">
+                          Escalado
+                        </span>
+                      ) : (
+                        p.id.split("-")[0]
+                      )}
                     </span>
                   </button>
                 );
